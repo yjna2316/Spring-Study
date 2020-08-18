@@ -1,12 +1,15 @@
 package hello.hellospringmock.repository;
 
 import hello.hellospringmock.domain.Member;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
 // option + enter : implement method
+//@Repository
 public class MemoryMemberRepository implements MemberRepository {
 
+  // static => 인스턴스와 상관없이 class 레벨에 붙어있다.
   private static Map<Long, Member> store = new HashMap<>();
   private static long sequence = 0L;
 
