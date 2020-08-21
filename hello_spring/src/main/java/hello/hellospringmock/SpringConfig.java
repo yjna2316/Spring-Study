@@ -1,6 +1,7 @@
 package hello.hellospringmock;
 
 import hello.hellospringmock.repository.JDBCMemberRepository;
+import hello.hellospringmock.repository.JdbcTemplateMemberRepository;
 import hello.hellospringmock.repository.MemberRepository;
 import hello.hellospringmock.repository.MemoryMemberRepository;
 import hello.hellospringmock.service.MemberService;
@@ -34,7 +35,8 @@ public class SpringConfig {
         /**
          * OCP 원칙 - 코드의 수정 없이 기능 수정이 가능하다.
          **/
-        return new JDBCMemberRepository(dataSource);
-        //return new MemoryMemberRepository();
+        return new JdbcTemplateMemberRepository(dataSource);
+//      return new JDBCMemberRepository(dataSource)
+//      return new MemoryMemberRepository();
     }
 }
