@@ -6,12 +6,14 @@ import hello.hellospringmock.repository.MemberRepository;
 import hello.hellospringmock.repository.MemoryMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 // command + shift + T : test auto create
 // @Service
+@Transactional // JPL?을 사용하려면 @Transactional 어노테이션이 꼭 필요하다
 public class MemberService {
 //    private final MemberRepository memberRepository = new MemoryMemberRepository();
 
