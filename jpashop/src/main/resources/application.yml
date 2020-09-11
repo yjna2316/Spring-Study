@@ -8,6 +8,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
+      # none: DB 내용 유지 가능
+      # create: app 실행 시점에 테이블 drop하고 create
     properties:
       hibernate:
   #      show_sql: true

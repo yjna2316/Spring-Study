@@ -1,36 +1,23 @@
 package jpabook.jpashop.domain;
-
-
 import lombok.*;
 
-import javax.persistence.GeneratedValue;
 import javax.persistence.*;
-import java.util.*;
+import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter @Setter
 public class Member {
-    @Id @GeneratedValue
+    @Id @GeneratedValue @Column(name = "member_id")
     private Long id;
-    private String username;
 
+    @NotEmpty // 무조건 값이 있어야함
+    private String name;
 
+    @Embedded
+    private Address address;
 
+    @OneToMany(mappedBy = "member")
+    private List<Order> orders = new ArrayList<>();
 }
-
-
-//@Entity
-//@Getter @Setter
-//public class Member {
-//    @Id @GeneratedValue
-//    @Column(name = "member_id")
-//    private Long id;
-//
-//    private String name;
-//
-//    @Embedded // 내장 타입, Value Type
-//    private Address address;
-//
-//    @OneToMany(mappedBy = "member") // 회원은 주문(Orders)의 'member' 변수를 통 맵핑된다.
-//    private List<Order> orders = new ArrayList<>(); // 주문이 여러개니까 리스트로 받아오는구나
-//}

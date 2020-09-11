@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Getter @Setter
 public class Movie extends Item {
 
-    String director;
-    String actor;
+    private String director;
+    private String actor;
 
 }

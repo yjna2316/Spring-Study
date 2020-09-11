@@ -15,7 +15,7 @@ public class Delivery {
     /**
      * 일대일 관계의 경우, 보통 접근이 많은 DB에 FK를 넣는다.
      */
-    @OneToOne(mappedBy = "delivery")
+    @OneToOne(mappedBy = "delivery", fetch = FetchType.LAZY)
     private Order order;
 
     @Embedded    // value type
