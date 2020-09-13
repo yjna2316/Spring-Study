@@ -86,19 +86,55 @@ public class OrderRepository {
         return query.getResultList();
         }
 
-    public List<Order> findAllWithMemberDelivery() {
+    /** fetch join: 쿼리 한번만 날림 **/
+    public List<Order> findAllWithMemberDelivery(int offset, int limit) {
         return em.createQuery(
                 "select o from Order o" +
                         " join fetch o.member m" +
                         " join fetch o.delivery d", Order.class
-        ).getResultList();
+               ).setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
     }
 
-//    public List<Order> findAllWithMemberDelivery() {
-//        return em.createQuery(
-//                "select o from Order o" +
-//                        " join o.member m" +
-//                        " join o.delivery d", Order.class)
-//                .getResultList();
-//    }
+    /**  join: 쿼리 1번만 날리지만 지연로딩 때문에 밖에서 N번 추가로 날리게 됨 **/
+    /*    public List<Order> findAllWithMemberDelivery() {
+        return em.createQuery(
+                "select o from Order o" +
+                        " join o.member m" +
+                        " join o.delivery d", Order.class)
+                .getResultList();
+    }*/
+
+    /**
+     * 주의사항
+     *
+     * 1. 컬렉션(1대다) fetch join은 페이징 불가능
+     *    모든 데이터를 메모리에 올린 후 메모리단에서 페이징 처리 한다. => 1대다 관계에서는 outofmemory 에러 가능
+     *    ToOne 관계로만 이루어져 있을 때는 fetch join 사용 괜
+     *    주문기준(order)가 아니라 다(order_item)기준으로 페이징 처리가 된다.
+     *
+     * 2. 컬렉션(1대다) fetch join은 1번만 할것
+     *    2개 이상이 되면 1대다대다 가 되서 너무 많은 row를 가지고 올 수 있음.
+     */
+
+    /**
+     * 컬렉션(1대다) fetch join
+     * 문제점 : 1대다 관계의 경우, Join시 뻥튀기가 되서 나온다. (주문은 2개인데 DB는 4개 row 뱉음) -> api response도 2개 아닌 중복된 4개 반환
+     * 해결책 : select distinct 이용
+     * 효과 :   1. DB 쿼리 select distinct -> but 이전과 동일하게 4row 반환 (row내용 완전 동일하지 않기 때문)
+     *         2. 애플리케이션 단에서 루트 엔티티가 (id) 동일하면 중복 제거
+     */
+
+    public List<Order> findAllWithItem() {
+        return em.createQuery(
+                "select distinct o from Order o " +
+                        "join fetch o.member m " +
+                        "join fetch o.delivery d " +
+                        "join fetch o.orderItems oi " +
+                        "join fetch oi.item i", Order.class)
+//                .setFirstResult(1)
+//                .setMaxResults(100)
+                .getResultList();
+    }
 }

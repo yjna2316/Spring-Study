@@ -3,11 +3,13 @@ package jpabook.jpashop.domain.item;
 import jpabook.jpashop.domain.Category;
 import jpabook.jpashop.exception.NotEnoughStockException;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+//@BatchSize(size = 100) // xto1 관계는 여기다가 적는다.
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE) // 한 테이블 안에 상속 받는 애들 다 때려박은
 @DiscriminatorColumn(name = "dtype")

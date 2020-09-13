@@ -14,6 +14,8 @@ spring:
       hibernate:
   #      show_sql: true
         format_sql: true
+        default_batch_fetch_size: 100 # where in () 절을 이용해 중복 데이터 없이 최적화 가능. size는 In 쿼리의 갯수이다. # Global 하게 적용하는 방법
+
 logging:
   level:
     org.hibernate.SQL: debug

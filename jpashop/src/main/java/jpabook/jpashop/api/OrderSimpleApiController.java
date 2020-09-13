@@ -31,7 +31,7 @@ public class OrderSimpleApiController {
     public List<Order> ordersV1() {
         List<Order> all = orderRepository.findAllByString(new OrderSearch());
         for (Order order : all) {
-            order.getMember().getName(); // LAZY 강제 초기화 => 필요한 정보만 내려줄 수 있다.
+            order.getMember().getName(); // LAZY 강제 초기화 => 필요한 정보만 내려줄 수 있다. (지연 로딩으로 인해 가짜 객체를 들고 있었으므로, 진짜 객체를 가지고 오기 위해 강제로 초기화시켜준다)
             order.getDelivery().getAddress(); // LAZY 강제 초기
         }
         return all; // 이렇게 객체(엔티티)를 그대로 반환하면 안된다
@@ -64,7 +64,7 @@ public class OrderSimpleApiController {
      */
     @GetMapping("/api/v3/simple-orders")
     public List<OrderSimpleQueryDto> orderV3() {
-        List<Order> orders = orderRepository.findAllWithMemberDelivery(); // fetch join으로 쿼리 1번만 날린다. return type: Order
+        List<Order> orders = orderRepository.findAllWithMemberDelivery(0,0); // fetch join으로 쿼리 1번만 날린다. return type: Order
         List<OrderSimpleQueryDto> result = orders.stream().map(OrderSimpleQueryDto::new).collect(Collectors.toList()); // response render
         return result;
     }
