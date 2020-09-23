@@ -1,0 +1,38 @@
+buildscript {
+    // ext: builde.gradle 안에서의 전역변수 설
+    ext {
+        springBootVersion = '2.1.7.RELEASE'
+    }
+    // repositories: 의존성(library)들을 어떤 원격 저장에서 받을지 정한다.
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    // dependencies: 프로젝트 개발에 필요한 의존성 선
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management' // 스프링 부트 의존성 관리해주는 plugin
+
+group 'com.jayy.book'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-web')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+
+
+
+
+
